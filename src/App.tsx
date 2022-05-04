@@ -8,10 +8,9 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   useColorScheme,
@@ -20,16 +19,16 @@ import {
 
 import {TopBar, Owed, Dates, PayButton} from './javascript/components/Home';
 import {getColors} from './javascript/styles/colors';
+import {Provider} from 'react-redux';
+import {store} from './javascript/data/store';
 
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: getColors(isDarkMode).background,
-    flex: 1,
-  };
-
-  const styles = StyleSheet.create({
+const getStyles = (isDarkMode: boolean) => {
+  const colors = getColors(isDarkMode);
+  return StyleSheet.create({
+    background: {
+      backgroundColor: colors.background,
+      flex: 1,
+    },
     container: {
       flex: 1,
       flexGrow: 1,
@@ -47,21 +46,32 @@ const App = () => {
       justifyContent: 'flex-end',
     },
   });
+};
+
+const App = () => {
+  const isDarkMode = useColorScheme() === 'dark';
+  const styles = getStyles(isDarkMode);
+  const [showPayDialog, setShowPayDialog] = useState(false);
+  const toggleShowPayDialog = () => {
+    setShowPayDialog(!showPayDialog);
+  };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.container}>
-        <TopBar />
-        <View style={styles.contentContainer}>
-          <Owed />
-          <Dates />
+    <Provider store={store}>
+      <SafeAreaView style={styles.background}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <View style={styles.container}>
+          <TopBar />
+          <View style={styles.contentContainer}>
+            <Owed />
+            <Dates />
+          </View>
+          <View style={styles.footer}>
+            <PayButton toggleShowPayDialog={toggleShowPayDialog} />
+          </View>
         </View>
-        <View style={styles.footer}>
-          <PayButton />
-        </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </Provider>
   );
 };
 

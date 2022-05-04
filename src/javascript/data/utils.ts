@@ -1,8 +1,11 @@
-import {CurrencySymbol} from './store';
+import {CurrencySymbol} from './types';
 
 export const printCurrency = (amount: number, currency: CurrencySymbol) => {
+  if (amount === 0) {
+    return amount;
+  }
   if (amount < 100) {
-    return `${amount}${currency.major}`;
+    return `${amount}${currency.minor}`;
   }
 
   const amounts = [Math.floor(amount / 100), amount % 100];
