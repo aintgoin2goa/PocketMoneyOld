@@ -1,10 +1,12 @@
 export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type DateString = string;
 
 export type Payment = {
-  date: Date;
+  date: DateString;
   owed: number;
   paid: number;
   remaining: number;
+  child: string;
 };
 
 export type CurrencySymbol = {
@@ -26,5 +28,5 @@ export type Child = {
 
 export type State = {
   currentChild: string;
-  children: Map<string, Child>;
+  children: Child[];
 };

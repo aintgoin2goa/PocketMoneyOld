@@ -1,18 +1,22 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {AppState} from './store';
-import {nextDay, formatDistanceToNow, format} from 'date-fns';
+import {nextDay, format} from 'date-fns';
+import {formatDistance, parseDate} from './utils';
 
-const getActiveChild = (state: AppState) =>
-  state.children.get(state.currentChild) ??
-  Array.from(state.children.values())[0];
-const getLastPayment = (state: AppState) => getActiveChild(state).payments[0];
-const getSettings = (state: AppState) => getActiveChild(state).settings;
+export const getActiveChild = (state: AppState) =>
+  state.children.find(c => c.name === state.currentChild) ?? state.children[0];
+export const getLastPayment = (state: AppState) =>
+  getActiveChild(state).payments[0];
+export const getSettings = (state: AppState) => getActiveChild(state).settings;
 
 export const amountOwedSelector = createSelector(
   getLastPayment,
   getSettings,
   (payment, settings) => {
-    let date = payment?.date ?? new Date();
+    let date = new Date();
+    if (payment && payment.date) {
+      date = parseDate(payment.date);
+    }
     const now = new Date();
     let payDays = 0;
     date = nextDay(date, settings.payDay);
@@ -26,15 +30,18 @@ export const amountOwedSelector = createSelector(
 );
 
 export const lastPaymentSelector = createSelector(getLastPayment, payment => {
-  return `${format(payment.date, 'do LLLL')} (${formatDistanceToNow(
-    payment.date,
-  )} ago)`;
+  if (!payment) {
+    return 'No payments found';
+  }
+  const date = parseDate(payment.date);
+  return `${format(date, 'do LLLL')} (${formatDistance(date, new Date())})`;
 });
 
 export const nextPaymentSelector = createSelector(getSettings, settings => {
   const nextPaymentDate = nextDay(new Date(), settings.payDay);
-  return `${format(nextPaymentDate, 'EEEE do')} (in ${formatDistanceToNow(
+  return `${format(nextPaymentDate, 'EEEE do')} (${formatDistance(
     nextPaymentDate,
+    new Date(),
   )})`;
 });
 

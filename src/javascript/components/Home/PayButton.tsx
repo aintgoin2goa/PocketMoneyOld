@@ -25,12 +25,15 @@ const getStyles = (isDarkMode: boolean) => {
 };
 
 export type PayButtonProps = {
-  toggleShowPayDialog: () => void;
+  setShowPayDialog: (show: boolean) => void;
 };
 
-export const PayButton: React.FC<PayButtonProps> = ({toggleShowPayDialog}) => {
+export const PayButton: React.FC<PayButtonProps> = ({setShowPayDialog}) => {
   const styles = getStyles(useColorScheme() === 'dark');
-  const onPress = () => toggleShowPayDialog();
+  const onPress = () => {
+    console.log('button pressed');
+    setShowPayDialog(true);
+  };
   return (
     <View style={styles.container}>
       <Pressable style={styles.button} onPress={onPress}>
