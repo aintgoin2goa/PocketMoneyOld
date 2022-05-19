@@ -15,7 +15,7 @@ export const initialState: State = {
         },
       ],
       settings: {
-        pocketMoneyPerWeek: 50,
+        pocketMoneyPerWeek: 100,
         payDay: 6,
         currency: {
           major: '£',

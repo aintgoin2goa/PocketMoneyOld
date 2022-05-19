@@ -1,9 +1,12 @@
 import {differenceInDays, format, parse} from 'date-fns';
 import {CurrencySymbol, DateString} from './types';
 
-export const printCurrency = (amount: number, currency: CurrencySymbol) => {
+export const printCurrency = (
+  amount: number,
+  currency: CurrencySymbol,
+): string => {
   if (amount === 0) {
-    return amount;
+    return String(amount);
   }
   if (amount < 100) {
     return `${amount}${currency.minor}`;

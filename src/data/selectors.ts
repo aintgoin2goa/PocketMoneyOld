@@ -1,13 +1,14 @@
 import {createSelector} from '@reduxjs/toolkit';
 import {AppState} from './store';
 import {nextDay, format} from 'date-fns';
-import {formatDistance, parseDate} from './utils';
+import {formatDistance, parseDate, printCurrency} from './utils';
 
 export const getActiveChild = (state: AppState) =>
   state.children.find(c => c.name === state.currentChild) ?? state.children[0];
 export const getLastPayment = (state: AppState) =>
   getActiveChild(state).payments[0];
 export const getSettings = (state: AppState) => getActiveChild(state).settings;
+export const getPayments = (state: AppState) => getActiveChild(state).payments;
 
 export const amountOwedSelector = createSelector(
   getLastPayment,
@@ -39,11 +40,25 @@ export const lastPaymentSelector = createSelector(getLastPayment, payment => {
 
 export const nextPaymentSelector = createSelector(getSettings, settings => {
   const nextPaymentDate = nextDay(new Date(), settings.payDay);
-  return `${format(nextPaymentDate, 'EEEE do')} (${formatDistance(
+  return `${format(nextPaymentDate, 'EEEE do LLLL')} (${formatDistance(
     nextPaymentDate,
     new Date(),
   )})`;
 });
+
+export const paymentHistorySelector = createSelector(
+  getPayments,
+  getSettings,
+  (payments, settings) => {
+    return payments.map((payment, index) => {
+      return {
+        key: `payment_${index}`,
+        date: format(parseDate(payment.date), 'EEEE do LLLL'),
+        amount: printCurrency(payment.paid, settings.currency),
+      };
+    });
+  },
+);
 
 export const activeChildSelector = createSelector(
   getActiveChild,

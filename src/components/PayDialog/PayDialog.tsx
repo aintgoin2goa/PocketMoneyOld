@@ -57,7 +57,6 @@ export const PayDialog: React.FC<PayDialogProps> = ({
   showPayDialog,
   setShowPayDialog,
 }) => {
-  console.log('showPayDialog', showPayDialog);
   const styles = getStyles(useColorScheme() === 'dark');
   const settings = useAppSelector(settingsSelector);
   const owed = useAppSelector(amountOwedSelector);

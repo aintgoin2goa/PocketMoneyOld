@@ -10,6 +10,7 @@
 
 import React, {useState} from 'react';
 import {
+  Button,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -23,6 +24,7 @@ import {Provider} from 'react-redux';
 import {persistor, store} from './/data/store';
 import {PayDialog} from './components/PayDialog';
 import {PersistGate} from 'redux-persist/integration/react';
+import {PaymentHistory} from './components/PaymentHistory';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
@@ -51,6 +53,7 @@ const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const styles = getStyles(isDarkMode);
   const [showPayDialog, setShowPayDialog] = useState(false);
+  const [showPaymentHistory, setShowPaymentHistory] = useState(false);
 
   return (
     <Provider store={store}>
@@ -62,6 +65,10 @@ const App = () => {
             <View style={styles.contentContainer}>
               <Owed />
               <Dates />
+              <Button
+                title="View Payment History"
+                onPress={() => setShowPaymentHistory(true)}
+              />
             </View>
             <View style={styles.footer}>
               <PayButton setShowPayDialog={setShowPayDialog} />
@@ -71,6 +78,10 @@ const App = () => {
         <PayDialog
           setShowPayDialog={setShowPayDialog}
           showPayDialog={showPayDialog}
+        />
+        <PaymentHistory
+          setShowPaymentHistory={setShowPaymentHistory}
+          showPaymentHistory={showPaymentHistory}
         />
       </PersistGate>
     </Provider>
