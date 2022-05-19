@@ -17,11 +17,11 @@ import {
   View,
 } from 'react-native';
 
-import {TopBar, Owed, Dates, PayButton} from './javascript/components/Home';
-import {getColors} from './javascript/styles/colors';
+import {TopBar, Owed, Dates, PayButton} from './components/Home';
+import {getColors} from './styles/colors';
 import {Provider} from 'react-redux';
-import {persistor, store} from './javascript/data/store';
-import {PayDialog} from './javascript/components/PayDialog';
+import {persistor, store} from './/data/store';
+import {PayDialog} from './components/PayDialog';
 import {PersistGate} from 'redux-persist/integration/react';
 
 const getStyles = (isDarkMode: boolean) => {

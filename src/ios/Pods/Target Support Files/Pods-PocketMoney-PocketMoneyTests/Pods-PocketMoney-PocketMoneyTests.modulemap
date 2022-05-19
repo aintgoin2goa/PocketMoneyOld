@@ -1,6 +1,0 @@
-module Pods_PocketMoney_PocketMoneyTests {
-  umbrella header "Pods-PocketMoney-PocketMoneyTests-umbrella.h"
-
-  export *
-  module * { export * }
-}

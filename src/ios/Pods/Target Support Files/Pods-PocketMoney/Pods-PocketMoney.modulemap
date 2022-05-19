@@ -1,6 +1,0 @@
-module Pods_PocketMoney {
-  umbrella header "Pods-PocketMoney-umbrella.h"
-
-  export *
-  module * { export * }
-}
