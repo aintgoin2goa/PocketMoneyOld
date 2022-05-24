@@ -1,10 +1,8 @@
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {
   Button,
   FlatList,
-  Modal,
-  SafeAreaView,
-  ScrollView,
   StyleSheet,
   Text,
   useColorScheme,
@@ -13,12 +11,13 @@ import {
 import {paymentHistorySelector} from '../../data/selectors';
 import {useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
-import {TITLE_FONT, BASE_FONT} from '../../styles/typography';
+import {BASE_FONT} from '../../styles/typography';
+import {StackList} from '../../types';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
   return StyleSheet.create({
-    modal: {},
+    container: {},
     buttonRow: {
       paddingHorizontal: 20,
       flexDirection: 'row',
@@ -52,10 +51,10 @@ const getStyles = (isDarkMode: boolean) => {
   });
 };
 
-export type PaymentHistoryProps = {
-  showPaymentHistory: boolean;
-  setShowPaymentHistory: (show: boolean) => void;
-};
+export type PaymentHistoryProps = NativeStackScreenProps<
+  StackList,
+  'PaymentHistory'
+>;
 
 type ItemProps = {
   date: string;
@@ -72,33 +71,19 @@ export const Item: React.FC<ItemProps> = ({date, amount}) => {
   );
 };
 
-export const PaymentHistory: React.FC<PaymentHistoryProps> = ({
-  setShowPaymentHistory,
-  showPaymentHistory,
-}) => {
+export const PaymentHistory: React.FC<PaymentHistoryProps> = () => {
   const styles = getStyles(useColorScheme() === 'dark');
   const history = useAppSelector(paymentHistorySelector);
   const renderItem = ({item}) => {
     return <Item {...item} />;
   };
   return (
-    <Modal
-      style={styles.modal}
-      animationType="slide"
-      visible={showPaymentHistory}
-      presentationStyle="pageSheet">
-      <View style={styles.buttonRow}>
-        <View style={styles.done}>
-          <Button title="Done" onPress={() => setShowPaymentHistory(false)} />
-        </View>
-      </View>
-      <SafeAreaView>
-        <FlatList
-          data={history}
-          renderItem={renderItem}
-          keyExtractor={item => item.key}
-        />
-      </SafeAreaView>
-    </Modal>
+    <View style={styles.container}>
+      <FlatList
+        data={history}
+        renderItem={renderItem}
+        keyExtractor={item => item.key}
+      />
+    </View>
   );
 };
