@@ -12,7 +12,7 @@ const getStyles = (isDarkMode: boolean) => {
     container: {
       justifyContent: 'center',
       alignItems: 'center',
-      marginTop: 50,
+      marginTop: 20,
     },
     label: {
       fontFamily: BASE_FONT,

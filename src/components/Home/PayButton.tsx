@@ -13,8 +13,9 @@ const getStyles = (isDarkMode: boolean) => {
       backgroundColor: colors.highlight,
       paddingHorizontal: 20,
       paddingVertical: 10,
-      borderRadius: 10,
+      borderRadius: 5,
       marginRight: 10,
+      marginBottom: 10,
     },
     buttonText: {
       fontFamily: TITLE_FONT,

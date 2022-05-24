@@ -16,18 +16,19 @@ const getStyles = (isDarkMode: boolean) => {
       // flex: 1,
     },
     title: {
-      height: 40,
       fontFamily: TITLE_FONT,
-      fontSize: 30,
+      fontSize: 25,
       backgroundColor: colors.text,
       color: colors.background,
       paddingHorizontal: 10,
+      paddingVertical: 5,
     },
     amount: {
       fontFamily: BASE_FONT,
-      fontSize: 25,
+      fontSize: 20,
       color: colors.text,
       paddingHorizontal: 10,
+      paddingVertical: 10,
     },
   });
 };
