@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import {MoneyInput} from './MoneyInput';
-import {useAppDispatch, useAppSelector} from '../../data/store';
+import {useAppDispatch, useAppSelector} from '../../../data/store';
 import {
   activeChildSelector,
   amountOwedSelector,
   settingsSelector,
-} from '../../data/selectors';
-import {payment} from '../../data/actions';
+} from '../../../data/selectors';
+import {payment} from '../../../data/actions';
 import {Button, Modal, StyleSheet, useColorScheme, View} from 'react-native';
-import {getColors} from '../../styles/colors';
-import {formatDate} from '../../data/utils';
-import {Payment} from '../../data/types';
+import {getColors} from '../../../styles/colors';
+import {formatDate} from '../../../data/utils';
+import {Payment} from '../../../data/types';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);

@@ -1,10 +1,10 @@
 import React from 'react';
 import {StyleSheet, Text, useColorScheme, View} from 'react-native';
-import {CurrencySymbol} from '../../data/types';
-import {printCurrency} from '../../data/utils';
-import {getColors} from '../../styles/colors';
+import {CurrencySymbol} from '../../../data/types';
+import {printCurrency} from '../../../data/utils';
+import {getColors} from '../../../styles/colors';
 import {Slider} from '@miblanchard/react-native-slider';
-import {TITLE_FONT} from '../../styles/typography';
+import {TITLE_FONT} from '../../../styles/typography';
 
 export type MoneyInputProps = {
   currency: CurrencySymbol;

@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {Button, StyleSheet, useColorScheme, View} from 'react-native';
 import {TopBar, Owed, PayButton} from '.';
 import {getColors} from '../../styles/colors';
-import {PayDialog} from '../PayDialog';
+import {PayDialog} from './PayDialog';
 import {Dates} from './Dates';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackList} from '../../types';
