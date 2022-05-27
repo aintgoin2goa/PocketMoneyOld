@@ -1,6 +1,10 @@
 import {differenceInDays, format, parse} from 'date-fns';
 import {CurrencySymbol, DateString} from './types';
 
+export const splitCurrencyAmount = (amount: number): [number, number] => {
+  return [Math.floor(amount / 100), amount % 100];
+};
+
 export const printCurrency = (
   amount: number,
   currency: CurrencySymbol,
@@ -8,16 +12,22 @@ export const printCurrency = (
   if (amount === 0) {
     return String(amount);
   }
-  if (amount < 100) {
+  if (amount > 0 && amount < 100) {
     return `${amount}${currency.minor}`;
   }
 
-  const amounts = [Math.floor(amount / 100), amount % 100];
-  if (amounts[1] === 0) {
-    return `${currency.major}${amounts[0]}`;
+  let symbol = '';
+  if (amount < 0) {
+    symbol = '-';
+    amount = Math.abs(amount);
   }
 
-  return `${currency.major}${amounts.join('.')}`;
+  const amounts = splitCurrencyAmount(amount);
+  if (amounts[1] === 0) {
+    return `${symbol}${currency.major}${amounts[0]}`;
+  }
+
+  return `${symbol}${currency.major}${amounts.join('.')}`;
 };
 
 const DATE_FORMAT = 'yyyy-MM-dd';

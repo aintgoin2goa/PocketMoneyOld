@@ -1,8 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {Button, StyleSheet, useColorScheme, View} from 'react-native';
-import {TopBar, Owed, PayButton} from '.';
-import {getColors} from '../../styles/colors';
+import {TopBar, Owed} from '.';
+import {PrimaryActionButton} from '../shared/PrimaryActionButton';
 import {PayDialog} from './PayDialog';
 import {Dates} from './Dates';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -19,9 +18,7 @@ const getStyles = (isDarkMode: boolean) => {
       flex: 1,
     },
     footer: {
-      height: 100,
-      alignItems: 'flex-end',
-      justifyContent: 'flex-end',
+      padding: 10,
     },
   });
 };
@@ -34,7 +31,7 @@ export const Home: React.FC<HomeProps> = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <TopBar />
+      <TopBar navigation={navigation} />
       <View style={styles.contentContainer}>
         <Owed />
         <Dates />
@@ -44,7 +41,10 @@ export const Home: React.FC<HomeProps> = ({navigation}) => {
         />
       </View>
       <View style={styles.footer}>
-        <PayButton setShowPayDialog={setShowPayDialog} />
+        <PrimaryActionButton
+          text="Pay"
+          onPress={() => setShowPayDialog(true)}
+        />
       </View>
       <PayDialog
         setShowPayDialog={setShowPayDialog}

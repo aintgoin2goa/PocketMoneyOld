@@ -1,5 +1,7 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, useColorScheme, View} from 'react-native';
+import {amountOwedSelector} from '../../data/selectors';
+import {useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
 import {TITLE_FONT} from '../../styles/typography';
 
@@ -7,38 +9,44 @@ const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
   return StyleSheet.create({
     container: {
-      //   marginTop: 'auto',
+      marginTop: 'auto',
+      flexGrow: 1,
+      justifyContent: 'flex-end',
     },
     button: {
       backgroundColor: colors.highlight,
       paddingHorizontal: 20,
       paddingVertical: 10,
       borderRadius: 5,
-      marginRight: 10,
       marginBottom: 10,
     },
     buttonText: {
       fontFamily: TITLE_FONT,
       color: colors.background,
       fontSize: 30,
+      textAlign: 'center',
     },
   });
 };
 
 export type PayButtonProps = {
-  setShowPayDialog: (show: boolean) => void;
+  text: string;
+  onPress: () => void;
 };
 
-export const PayButton: React.FC<PayButtonProps> = ({setShowPayDialog}) => {
+export const PrimaryActionButton: React.FC<PayButtonProps> = ({
+  onPress,
+  text,
+}) => {
   const styles = getStyles(useColorScheme() === 'dark');
-  const onPress = () => {
-    console.log('button pressed');
-    setShowPayDialog(true);
-  };
+  const owed = useAppSelector(amountOwedSelector);
+  if (owed < 0) {
+    return null;
+  }
   return (
     <View style={styles.container}>
       <Pressable style={styles.button} onPress={onPress}>
-        <Text style={styles.buttonText}>Pay</Text>
+        <Text style={styles.buttonText}>{text}</Text>
       </Pressable>
     </View>
   );

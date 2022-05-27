@@ -1,9 +1,11 @@
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
-import {StyleSheet, Text, useColorScheme, View} from 'react-native';
+import {Pressable, StyleSheet, Text, useColorScheme, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {activeChildSelector} from '../../data/selectors';
 import {useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
+import {StackList} from '../../types';
 
 const createStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
@@ -39,7 +41,11 @@ const createStyles = (isDarkMode: boolean) => {
   });
 };
 
-export const TopBar: React.FC = () => {
+export type TopBarProps = {
+  navigation: NativeStackNavigationProp<StackList, 'Home'>;
+};
+
+export const TopBar: React.FC<TopBarProps> = ({navigation}) => {
   const styles = createStyles(useColorScheme() === 'dark');
   const name = useAppSelector(activeChildSelector);
   return (
@@ -48,7 +54,13 @@ export const TopBar: React.FC = () => {
         <Text style={styles.childName}>{name}</Text>
         <Icon style={styles.childMenuIcon} name="caret-down" size={20} />
       </View>
-      <Icon name="ios-settings-outline" size={30} style={styles.settingsIcon} />
+      <Pressable onPress={() => navigation.navigate('Edit Child')}>
+        <Icon
+          name="ios-settings-outline"
+          size={30}
+          style={styles.settingsIcon}
+        />
+      </Pressable>
     </View>
   );
 };

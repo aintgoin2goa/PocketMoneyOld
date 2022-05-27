@@ -53,7 +53,7 @@ const getStyles = (isDarkMode: boolean) => {
 
 export type PaymentHistoryProps = NativeStackScreenProps<
   StackList,
-  'PaymentHistory'
+  'Payment History'
 >;
 
 type ItemProps = {

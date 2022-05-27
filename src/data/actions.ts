@@ -1,4 +1,5 @@
 import {createAction} from '@reduxjs/toolkit';
-import {Payment} from './types';
+import {Payment, Child} from './types';
 
 export const payment = createAction<Payment>('payment');
+export const editChild = createAction<Child>('editChild');

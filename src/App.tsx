@@ -24,6 +24,7 @@ import {PaymentHistory} from './components/PaymentHistory';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackList} from './types';
+import {EditChild} from './components/EditChild';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
@@ -52,6 +53,11 @@ const App = () => {
               <Stack.Screen
                 name="Payment History"
                 component={PaymentHistory}
+                options={{headerShown: true}}
+              />
+              <Stack.Screen
+                name="Edit Child"
+                component={EditChild}
                 options={{headerShown: true}}
               />
             </Stack.Navigator>
