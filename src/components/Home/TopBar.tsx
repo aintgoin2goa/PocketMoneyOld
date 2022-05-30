@@ -48,6 +48,7 @@ export type TopBarProps = {
 export const TopBar: React.FC<TopBarProps> = ({navigation}) => {
   const styles = createStyles(useColorScheme() === 'dark');
   const name = useAppSelector(activeChildSelector);
+  console.log('Name', name);
   return (
     <View style={styles.container}>
       <View style={styles.childNameContainer}>

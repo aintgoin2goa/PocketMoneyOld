@@ -21,12 +21,13 @@ export type Settings = {
 };
 
 export type Child = {
+  id: number;
   name: string;
   settings: Settings;
   payments: Payment[];
 };
 
 export type State = {
-  currentChild: string;
+  currentChild: number;
   children: Child[];
 };

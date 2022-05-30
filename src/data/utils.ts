@@ -1,7 +1,10 @@
 import {differenceInDays, format, parse} from 'date-fns';
 import {CurrencySymbol, DateString} from './types';
 
-export const splitCurrencyAmount = (amount: number): [number, number] => {
+export const splitCurrencyAmount = (amount?: number): [number, number] => {
+  if (!amount) {
+    return [0, 0];
+  }
   return [Math.floor(amount / 100), amount % 100];
 };
 
