@@ -1,16 +1,14 @@
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
-import {StyleSheet, Text, TextInput, useColorScheme, View} from 'react-native';
-import {StackList} from '../../types';
 import {
-  activeChildDetailsSelector,
-  childCountSelector,
-} from '../../data/selectors';
-import {useAppDispatch, useAppSelector} from '../../data/store';
-import {editChild} from '../../data/actions';
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  useColorScheme,
+  View,
+} from 'react-native';
+import {childCountSelector} from '../../data/selectors';
+import {useAppSelector} from '../../data/store';
 import {Child, CurrencySymbol} from '../../data/types';
 import {BASE_FONT} from '../../styles/typography';
 import {getColors} from '../../styles/colors';
@@ -126,7 +124,7 @@ export const ChildEditor: React.FC<ChildEditorProps> = ({child, onSave}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.field}>
         <Text style={styles.labelText}>Name</Text>
         <TextInput
@@ -185,6 +183,6 @@ export const ChildEditor: React.FC<ChildEditorProps> = ({child, onSave}) => {
       </View>
 
       <PrimaryActionButton onPress={onSaveClick} text="Save" />
-    </View>
+    </ScrollView>
   );
 };

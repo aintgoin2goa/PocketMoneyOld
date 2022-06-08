@@ -14,7 +14,7 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import {Home} from './components/Home';
 import {getColors} from './styles/colors';
 import {Provider} from 'react-redux';
@@ -27,6 +27,7 @@ import {StackList} from './types';
 import {EditChild} from './components/EditChild';
 import {AddChild} from './components/EditChild/AddChild';
 import {activeChildSelector, childCountSelector} from './data/selectors';
+import {createIconSetFromFontello} from 'react-native-vector-icons';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
@@ -46,6 +47,7 @@ const App = () => {
   const childCount = useAppSelector(childCountSelector);
   const initialRouteName: keyof StackList =
     childCount > 0 ? 'Home' : 'Add Child';
+  console.log({childCount, initialRouteName});
   return (
     <SafeAreaView style={styles.background}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />

@@ -15,12 +15,10 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: {
         // Ignore these action types
-        ignoredActions: ['persist/PERSIST'],
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'],
       },
     }),
 });
-
-export const persistor = persistStore(store);
 
 export type AppState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

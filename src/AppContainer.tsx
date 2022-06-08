@@ -8,13 +8,24 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import {Provider} from 'react-redux';
-import {persistor, store} from './/data/store';
+import {store} from './data/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import App from './App';
+import {persistStore} from 'redux-persist';
+import {View, Text} from 'react-native';
 
 const AppContainer = () => {
+  const [rehydrated, setRehydrated] = useState(false);
+  const persistor = persistStore(store, {}, () => setRehydrated(true));
+  if (!rehydrated) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor} />
