@@ -12,18 +12,15 @@ export const printCurrency = (
   amount: number,
   currency: CurrencySymbol,
 ): string => {
-  if (amount === 0) {
+  const absAmount = Math.abs(amount);
+  if (absAmount === 0) {
     return String(amount);
   }
-  if (amount > 0 && amount < 100) {
+  if (absAmount < 100) {
     return `${amount}${currency.minor}`;
   }
 
   let symbol = '';
-  if (amount < 0) {
-    symbol = '-';
-    amount = Math.abs(amount);
-  }
 
   const amounts = splitCurrencyAmount(amount);
   if (amounts[1] === 0) {

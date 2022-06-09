@@ -31,9 +31,6 @@ export const amountOwedSelector = createSelector(
       date = nextDay(date, settings.payDay);
     }
     const owed = payment.remaining + payDays * settings.pocketMoneyPerWeek;
-    if (owed < 0) {
-      return 0;
-    }
     return owed;
   },
 );
@@ -86,4 +83,12 @@ export const settingsSelector = createSelector(
 export const childCountSelector = createSelector(
   getChildren,
   children => children.length,
+);
+
+export const inactiveChildrenSelector = createSelector(
+  getChildren,
+  getActiveChild,
+  (children, activeChild) => {
+    return children.filter(c => c.id !== activeChild.id);
+  },
 );

@@ -14,20 +14,17 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import {Home} from './components/Home';
 import {getColors} from './styles/colors';
-import {Provider} from 'react-redux';
-import {persistor, store, useAppSelector} from './/data/store';
-import {PersistGate} from 'redux-persist/integration/react';
+import {useAppSelector} from './/data/store';
 import {PaymentHistory} from './components/PaymentHistory';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackList} from './types';
 import {EditChild} from './components/EditChild';
 import {AddChild} from './components/EditChild/AddChild';
-import {activeChildSelector, childCountSelector} from './data/selectors';
-import {createIconSetFromFontello} from 'react-native-vector-icons';
+import {childCountSelector} from './data/selectors';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);

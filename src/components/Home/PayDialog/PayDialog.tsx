@@ -102,9 +102,10 @@ export const PayDialog: React.FC<PayDialogProps> = ({
         <View style={styles.inputContainer}>
           <MoneyInput
             currency={settings.currency}
+            pocketMoneyPerWeek={settings.pocketMoneyPerWeek}
             amount={amount}
             owed={owed}
-            step={settings.pocketMoneyPerWeek}
+            step={settings.pocketMoneyPerWeek / 2}
             setAmount={setAmount}
           />
         </View>

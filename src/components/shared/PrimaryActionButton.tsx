@@ -39,10 +39,6 @@ export const PrimaryActionButton: React.FC<PayButtonProps> = ({
   text,
 }) => {
   const styles = getStyles(useColorScheme() === 'dark');
-  const owed = useAppSelector(amountOwedSelector);
-  if (owed < 0) {
-    return null;
-  }
   return (
     <View style={styles.container}>
       <Pressable style={styles.button} onPress={onPress}>

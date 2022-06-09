@@ -8,6 +8,7 @@ import {TITLE_FONT} from '../../../styles/typography';
 
 export type MoneyInputProps = {
   currency: CurrencySymbol;
+  pocketMoneyPerWeek: number;
   owed: number;
   amount: number;
   setAmount: (amount: number) => void;
@@ -57,19 +58,23 @@ export const MoneyInput: React.FC<MoneyInputProps> = ({
   amount,
   step,
   setAmount,
+  pocketMoneyPerWeek,
 }) => {
   const styles = getStyles(useColorScheme() === 'dark');
   const onChange = value => {
     setAmount(value);
   };
+  const minimumValue = 0;
+  const maximumValue = owed > 0 ? owed * 2 : pocketMoneyPerWeek * 2;
+
   return (
     <View style={styles.container}>
       <Text style={styles.amount}>{printCurrency(amount, currency)}</Text>
       <View style={styles.sliderContainer}>
         <Slider
           value={amount}
-          maximumValue={owed * 2}
-          minimumValue={0}
+          maximumValue={maximumValue}
+          minimumValue={minimumValue}
           step={step}
           onValueChange={onChange}
         />

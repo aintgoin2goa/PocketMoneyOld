@@ -33,14 +33,15 @@ export const Owed: React.FC = () => {
   const styles = getStyles(useColorScheme() === 'dark');
   const owed = useAppSelector(amountOwedSelector);
   const settings = useAppSelector(settingsSelector);
+  const text = owed >= 0 ? 'You owe' : 'You have overpaid by';
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>You owe</Text>
+      <Text style={styles.label}>{text}</Text>
       <Text
         adjustsFontSizeToFit={true}
         allowFontScaling={true}
         style={styles.amount}>
-        {printCurrency(owed, settings.currency)}
+        {printCurrency(Math.abs(owed), settings.currency)}
       </Text>
     </View>
   );

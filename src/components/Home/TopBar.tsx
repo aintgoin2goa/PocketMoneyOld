@@ -1,17 +1,17 @@
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, useColorScheme, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {activeChildSelector} from '../../data/selectors';
 import {useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
 import {StackList} from '../../types';
+import {ChildSwitcher} from './ChildSwitcher';
 
 const createStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
   return StyleSheet.create({
     container: {
-      // flex: 1,
       height: 50,
       padding: 5,
       alignItems: 'center',
@@ -48,20 +48,34 @@ export type TopBarProps = {
 export const TopBar: React.FC<TopBarProps> = ({navigation}) => {
   const styles = createStyles(useColorScheme() === 'dark');
   const name = useAppSelector(activeChildSelector);
-  console.log('Name', name);
+  const [childSwitcherVisible, setChildSwitcherVisible] = useState(false);
+  navigation.addListener('transitionEnd', () => setChildSwitcherVisible(false));
   return (
-    <View style={styles.container}>
-      <View style={styles.childNameContainer}>
-        <Text style={styles.childName}>{name}</Text>
-        <Icon style={styles.childMenuIcon} name="caret-down" size={20} />
+    <React.Fragment>
+      <View style={styles.container}>
+        <Pressable
+          style={styles.childNameContainer}
+          onPress={() => setChildSwitcherVisible(!childSwitcherVisible)}>
+          <Text style={styles.childName}>{name}</Text>
+          <Icon
+            style={styles.childMenuIcon}
+            name={childSwitcherVisible ? 'caret-up' : 'caret-down'}
+            size={20}
+          />
+        </Pressable>
+        <Pressable onPress={() => navigation.navigate('Edit Child')}>
+          <Icon
+            name="ios-settings-outline"
+            size={30}
+            style={styles.settingsIcon}
+          />
+        </Pressable>
       </View>
-      <Pressable onPress={() => navigation.navigate('Edit Child')}>
-        <Icon
-          name="ios-settings-outline"
-          size={30}
-          style={styles.settingsIcon}
-        />
-      </Pressable>
-    </View>
+      <ChildSwitcher
+        visible={childSwitcherVisible}
+        navigation={navigation}
+        setVisible={setChildSwitcherVisible}
+      />
+    </React.Fragment>
   );
 };

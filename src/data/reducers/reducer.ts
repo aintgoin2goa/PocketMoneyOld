@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {payment, editChild, addChild} from '../actions';
+import {payment, editChild, addChild, switchChild} from '../actions';
 import {initialState} from '../initialState';
 import {Child, Payment, State} from '../types';
 
@@ -60,8 +60,18 @@ const addChildHandler = (
   return state;
 };
 
+const switchChildHandler = (
+  state: State,
+  action: {type: string; payload: Child},
+) => {
+  console.log(action);
+  state.currentChild = action.payload.id;
+  return state;
+};
+
 export const appReducer = createReducer(initialState, builder => {
   builder.addCase(payment, paymentHandler);
   builder.addCase(editChild, editChildHandler);
   builder.addCase(addChild, addChildHandler);
+  builder.addCase(switchChild, switchChildHandler);
 });
