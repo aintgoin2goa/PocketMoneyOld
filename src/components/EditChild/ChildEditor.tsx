@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Button,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,8 +14,9 @@ import {Child, CurrencySymbol} from '../../data/types';
 import {BASE_FONT} from '../../styles/typography';
 import {getColors} from '../../styles/colors';
 import {splitCurrencyAmount} from '../../data/utils';
-import DropDownPicker from 'react-native-dropdown-picker';
 import {PrimaryActionButton} from '../shared/PrimaryActionButton';
+import {Picker} from '@react-native-picker/picker';
+import {ActionSheet} from '../shared/ActionSheet';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
@@ -56,6 +58,17 @@ const getStyles = (isDarkMode: boolean) => {
       backgroundColor: colors.background,
       flexGrow: 1,
     },
+    valueContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'baseline',
+    },
+    value: {
+      fontFamily: BASE_FONT,
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginHorizontal: 10,
+    },
   });
 };
 
@@ -70,15 +83,30 @@ const daysOfWeek = [
 ];
 
 const CURRENCY_POUNDS = {major: '£', minor: 'p'};
+const CURRENCY_EUROS = {major: '€', minor: 'c'};
 
 const currencyMap = new Map<string, CurrencySymbol>([
   [CURRENCY_POUNDS.major, CURRENCY_POUNDS],
+  [CURRENCY_EUROS.major, CURRENCY_EUROS],
 ]);
 
 const currencies = Array.from(currencyMap.keys()).map(k => ({
   label: k,
   value: k,
 }));
+
+const currenciesPickerItems = () => {
+  return currencies.map(c => (
+    <Picker.Item key={c.value} label={c.label} value={c.value} />
+  ));
+};
+
+const daysOfWeekPickerItems = () => {
+  return daysOfWeek.map(d => <Picker.Item key={d.value} {...d} />);
+};
+
+const dayAsText = (value: number): string =>
+  daysOfWeek.find(d => d.value === value)?.label ?? 'ERROR';
 
 export type ChildEditorProps = {
   child?: Child;
@@ -94,15 +122,16 @@ export const ChildEditor: React.FC<ChildEditorProps> = ({child, onSave}) => {
   const [pounds, setPounds] = useState(pocketMoneyAmounts[0]);
   const [pence, setPence] = useState(pocketMoneyAmounts[1]);
 
-  const [dayDropdownOpen, setDayDropdownOpen] = useState(false);
   const [day, setDay] = useState(child?.settings?.payDay ?? 0);
-  const [dayItems, setDayItems] = useState(daysOfWeek);
+  const [pickerDay, setPickerDay] = useState(day);
 
-  const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
+  const [showCurrencyPicker, setShowCurrencyPicker] = useState(false);
+  const [showDayPicker, setShowDayPicker] = useState(false);
+
   const [currency, setCurrency] = useState(
     child?.settings?.currency.major ?? CURRENCY_POUNDS.major,
   );
-  const [currencyItems, setCurrencyItems] = useState(currencies);
+  const [pickerCurrency, setPickerCurrency] = useState(currency);
   const newId = useAppSelector(childCountSelector);
 
   const onSaveClick = () => {
@@ -124,7 +153,7 @@ export const ChildEditor: React.FC<ChildEditorProps> = ({child, onSave}) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.field}>
         <Text style={styles.labelText}>Name</Text>
         <TextInput
@@ -136,27 +165,31 @@ export const ChildEditor: React.FC<ChildEditorProps> = ({child, onSave}) => {
       </View>
 
       <View style={styles.field}>
-        <Text style={styles.labelText}>Currency</Text>
-        <DropDownPicker
-          open={currencyDropdownOpen}
-          setOpen={setCurrencyDropdownOpen}
-          items={currencyItems}
-          setItems={setCurrencyItems}
-          value={currency}
-          setValue={setCurrency}
-        />
+        <View style={styles.valueContainer}>
+          <Text style={styles.labelText}>Pocket money day:</Text>
+          <Text style={styles.value}>{dayAsText(day)}</Text>
+          <Button title="Change" onPress={() => setShowDayPicker(true)} />
+        </View>
+        <ActionSheet
+          show={showDayPicker}
+          setShow={setShowDayPicker}
+          onDone={() => setDay(pickerDay)}>
+          <Picker selectedValue={pickerDay} onValueChange={setPickerDay}>
+            {daysOfWeekPickerItems()}
+          </Picker>
+        </ActionSheet>
       </View>
 
       <View style={styles.field}>
         <Text style={styles.labelText}>Pocket money per week</Text>
         <View style={styles.moneyContainer}>
-          <Text style={styles.inlineLabelText}>£</Text>
+          <Text style={styles.inlineLabelText}>{currency}</Text>
           <TextInput
             style={styles.input}
             value={String(pounds)}
             keyboardType="numeric"
             onChangeText={text => setPounds(Number(text))}
-            returnKeyType="next"
+            returnKeyType="done"
           />
           <Text style={styles.inlineLabelText}>.</Text>
           <TextInput
@@ -164,25 +197,26 @@ export const ChildEditor: React.FC<ChildEditorProps> = ({child, onSave}) => {
             value={String(pence)}
             keyboardType="numeric"
             onChangeText={text => setPence(Number(text))}
-            returnKeyType="next"
+            returnKeyType="done"
           />
         </View>
-      </View>
-
-      <View style={styles.field}>
-        <Text style={styles.labelText}>Pocket money day</Text>
-        <DropDownPicker
-          open={dayDropdownOpen}
-          setOpen={setDayDropdownOpen}
-          items={dayItems}
-          setItems={setDayItems}
-          value={day}
-          setValue={setDay}
-          maxHeight={400}
+        <Button
+          title="change currency"
+          onPress={() => setShowCurrencyPicker(true)}
         />
+        <ActionSheet
+          show={showCurrencyPicker}
+          setShow={setShowCurrencyPicker}
+          onDone={() => setCurrency(pickerCurrency)}>
+          <Picker
+            selectedValue={pickerCurrency}
+            onValueChange={setPickerCurrency}>
+            {currenciesPickerItems()}
+          </Picker>
+        </ActionSheet>
       </View>
 
       <PrimaryActionButton onPress={onSaveClick} text="Save" />
-    </ScrollView>
+    </View>
   );
 };
