@@ -3,13 +3,14 @@ import {Text} from '@rneui/base';
 import React from 'react';
 import {Pressable, StyleSheet, useColorScheme, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {switchChild} from '../../data/actions';
+import {deleteChild, switchChild} from '../../data/actions';
 import {inactiveChildrenSelector} from '../../data/selectors';
 import {useAppDispatch} from '../../data/store';
 import {Child} from '../../data/types';
 import {getColors} from '../../styles/colors';
 import {BASE_FONT} from '../../styles/typography';
 import {StackList} from '../../types';
+import {Deletable} from '../shared/Deletable';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
@@ -69,12 +70,19 @@ export const ChildSwitcher: React.FC<ChildSwitcherProps> = ({
 }) => {
   const styles = getStyles(useColorScheme() === 'dark');
   const children = useSelector(inactiveChildrenSelector);
+  const dispatch = useAppDispatch();
   if (!visible) {
     return null;
   }
 
   const rows = children.map(child => (
-    <ChildRow setVisible={setVisible} key={child.id} child={child} />
+    <Deletable
+      key={child.id}
+      onDelete={() =>
+        dispatch({type: deleteChild.type, payload: {id: child.id}})
+      }>
+      <ChildRow setVisible={setVisible} child={child} />
+    </Deletable>
   ));
 
   return (

@@ -5,6 +5,7 @@ import {
   addChild,
   switchChild,
   deletePayment,
+  deleteChild,
 } from '../actions';
 import {initialState} from '../initialState';
 import {Child, Payment, State} from '../types';
@@ -89,10 +90,21 @@ const deletePaymentHandler = (
   return state;
 };
 
+const deleteChildHandler = (
+  state: State,
+  action: {type: string; payload: {id: number}},
+) => {
+  console.log(action, state);
+  const index = state.children.findIndex(c => c.id === action.payload.id);
+  state.children.splice(index, 1);
+  return state;
+};
+
 export const appReducer = createReducer(initialState, builder => {
   builder.addCase(payment, paymentHandler);
   builder.addCase(editChild, editChildHandler);
   builder.addCase(addChild, addChildHandler);
   builder.addCase(switchChild, switchChildHandler);
   builder.addCase(deletePayment, deletePaymentHandler);
+  builder.addCase(deleteChild, deleteChildHandler);
 });

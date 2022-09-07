@@ -6,3 +6,4 @@ export const deletePayment = createAction<{index: number}>('deletePayment');
 export const editChild = createAction<Child>('editChild');
 export const addChild = createAction<Child>('addChild');
 export const switchChild = createAction<Child>('switchChild');
+export const deleteChild = createAction<Child>('deleteChild');
