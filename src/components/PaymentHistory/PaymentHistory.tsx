@@ -1,21 +1,13 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useRef} from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  Alert,
-} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
+import React from 'react';
+import {FlatList, StyleSheet, Text, useColorScheme, View} from 'react-native';
 import {deletePayment} from '../../data/actions';
 import {paymentHistorySelector} from '../../data/selectors';
 import {useAppDispatch, useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
-import {BASE_FONT, TITLE_FONT} from '../../styles/typography';
+import {BASE_FONT} from '../../styles/typography';
 import {StackList} from '../../types';
+import {Deletable} from '../shared/Deletable';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
@@ -52,18 +44,6 @@ const getStyles = (isDarkMode: boolean) => {
       fontWeight: 'bold',
       fontSize: 20,
     },
-    deleteButtonContainer: {
-      backgroundColor: colors.highlight,
-      alignContent: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: 20,
-    },
-    deleteButtonText: {
-      color: colors.background,
-      fontFamily: TITLE_FONT,
-      fontWeight: 'bold',
-      fontSize: 20,
-    },
   });
 };
 
@@ -83,46 +63,17 @@ type RenderItemArgs = {
   item: ItemProps;
 };
 
-const renderRightActions =
-  (
-    styles: ReturnType<typeof getStyles>,
-    onDeletePress: () => ReturnType<typeof Alert.alert>,
-  ) =>
-  () => {
-    return (
-      <View style={styles.deleteButtonContainer}>
-        <TouchableOpacity onPress={onDeletePress}>
-          <Text style={styles.deleteButtonText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-
 export const Item: React.FC<ItemProps> = ({date, amount, index}) => {
   const styles = getStyles(useColorScheme() === 'dark');
-  const ref = useRef<Swipeable>(null);
   const dispatch = useAppDispatch();
-  const onDeletePress = () => {
-    return Alert.alert('Are you sure?', 'This cannot be undone!', [
-      {
-        text: 'Yes',
-        onPress: () => {
-          dispatch({type: deletePayment.type, payload: {index}});
-          ref.current?.close && ref.current.close();
-        },
-      },
-      {text: 'No'},
-    ]);
-  };
+  const onDelete = () => dispatch({type: deletePayment.type, payload: {index}});
   return (
-    <Swipeable
-      ref={ref}
-      renderRightActions={renderRightActions(styles, onDeletePress)}>
+    <Deletable onDelete={onDelete}>
       <View style={styles.item}>
         <Text style={styles.date}>{date}</Text>
         <Text style={styles.amount}>{amount}</Text>
       </View>
-    </Swipeable>
+    </Deletable>
   );
 };
 
