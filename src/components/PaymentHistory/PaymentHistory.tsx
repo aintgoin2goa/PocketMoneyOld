@@ -1,17 +1,20 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React from 'react';
+import React, {useRef} from 'react';
 import {
-  Button,
   FlatList,
   StyleSheet,
   Text,
   useColorScheme,
   View,
+  Alert,
 } from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {deletePayment} from '../../data/actions';
 import {paymentHistorySelector} from '../../data/selectors';
-import {useAppSelector} from '../../data/store';
+import {useAppDispatch, useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
-import {BASE_FONT} from '../../styles/typography';
+import {BASE_FONT, TITLE_FONT} from '../../styles/typography';
 import {StackList} from '../../types';
 
 const getStyles = (isDarkMode: boolean) => {
@@ -34,7 +37,7 @@ const getStyles = (isDarkMode: boolean) => {
     item: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      paddingVertical: 10,
+      paddingVertical: 20,
       paddingHorizontal: 20,
       borderBottomWidth: 1,
       borderBottomColor: colors.text,
@@ -42,11 +45,24 @@ const getStyles = (isDarkMode: boolean) => {
     },
     date: {
       fontFamily: BASE_FONT,
-      fontSize: 14,
+      fontSize: 20,
     },
     amount: {
       fontFamily: BASE_FONT,
       fontWeight: 'bold',
+      fontSize: 20,
+    },
+    deleteButtonContainer: {
+      backgroundColor: colors.highlight,
+      alignContent: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 20,
+    },
+    deleteButtonText: {
+      color: colors.background,
+      fontFamily: TITLE_FONT,
+      fontWeight: 'bold',
+      fontSize: 20,
     },
   });
 };
@@ -57,24 +73,63 @@ export type PaymentHistoryProps = NativeStackScreenProps<
 >;
 
 type ItemProps = {
+  index: number;
+  key: string;
   date: string;
   amount: string;
 };
 
-export const Item: React.FC<ItemProps> = ({date, amount}) => {
+type RenderItemArgs = {
+  item: ItemProps;
+};
+
+const renderRightActions =
+  (
+    styles: ReturnType<typeof getStyles>,
+    onDeletePress: () => ReturnType<typeof Alert.alert>,
+  ) =>
+  () => {
+    return (
+      <View style={styles.deleteButtonContainer}>
+        <TouchableOpacity onPress={onDeletePress}>
+          <Text style={styles.deleteButtonText}>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+export const Item: React.FC<ItemProps> = ({date, amount, index}) => {
   const styles = getStyles(useColorScheme() === 'dark');
+  const ref = useRef<Swipeable>(null);
+  const dispatch = useAppDispatch();
+  const onDeletePress = () => {
+    return Alert.alert('Are you sure?', 'This cannot be undone!', [
+      {
+        text: 'Yes',
+        onPress: () => {
+          dispatch({type: deletePayment.type, payload: {index}});
+          ref.current?.close && ref.current.close();
+        },
+      },
+      {text: 'No'},
+    ]);
+  };
   return (
-    <View style={styles.item}>
-      <Text style={styles.date}>{date}</Text>
-      <Text style={styles.amount}>{amount}</Text>
-    </View>
+    <Swipeable
+      ref={ref}
+      renderRightActions={renderRightActions(styles, onDeletePress)}>
+      <View style={styles.item}>
+        <Text style={styles.date}>{date}</Text>
+        <Text style={styles.amount}>{amount}</Text>
+      </View>
+    </Swipeable>
   );
 };
 
 export const PaymentHistory: React.FC<PaymentHistoryProps> = () => {
   const styles = getStyles(useColorScheme() === 'dark');
   const history = useAppSelector(paymentHistorySelector);
-  const renderItem = ({item}) => {
+  const renderItem = ({item}: RenderItemArgs) => {
     return <Item {...item} />;
   };
   return (

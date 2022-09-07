@@ -1,5 +1,11 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {payment, editChild, addChild, switchChild} from '../actions';
+import {
+  payment,
+  editChild,
+  addChild,
+  switchChild,
+  deletePayment,
+} from '../actions';
 import {initialState} from '../initialState';
 import {Child, Payment, State} from '../types';
 
@@ -69,9 +75,24 @@ const switchChildHandler = (
   return state;
 };
 
+const deletePaymentHandler = (
+  state: State,
+  action: {type: string; payload: {index: number}},
+) => {
+  console.log(action, state);
+
+  const child = state.children[state.currentChild];
+  const payments = child.payments;
+  payments.splice(action.payload.index, 1);
+  child.payments = payments;
+  state.children[state.currentChild] = child;
+  return state;
+};
+
 export const appReducer = createReducer(initialState, builder => {
   builder.addCase(payment, paymentHandler);
   builder.addCase(editChild, editChildHandler);
   builder.addCase(addChild, addChildHandler);
   builder.addCase(switchChild, switchChildHandler);
+  builder.addCase(deletePayment, deletePaymentHandler);
 });

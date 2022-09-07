@@ -57,6 +57,7 @@ export const paymentHistorySelector = createSelector(
   (payments, settings) => {
     return payments.map((payment, index) => {
       return {
+        index,
         key: `payment_${index}`,
         date: format(parseDate(payment.date), 'EEEE do LLLL'),
         amount: printCurrency(payment.paid, settings.currency),

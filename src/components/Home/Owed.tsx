@@ -41,7 +41,10 @@ export const Owed: React.FC = () => {
         adjustsFontSizeToFit={true}
         allowFontScaling={true}
         style={styles.amount}>
-        {printCurrency(Math.abs(owed), settings.currency)}
+        {printCurrency(
+          Math.abs(owed),
+          settings?.currency ?? {major: '£', minor: 'p'},
+        )}
       </Text>
     </View>
   );
