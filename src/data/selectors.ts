@@ -5,8 +5,11 @@ import {formatDistance, parseDate, printCurrency} from './utils';
 import {State} from './types';
 
 export const getChildren = (state: State) => state.children;
-export const getActiveChild = (state: State) =>
-  state.children[state.currentChild ?? 0];
+export const getActiveChild = (state: State) => {
+  const index = state.currentChild ?? 0;
+  const child = state.children[index];
+  return child ?? state.children[0];
+};
 export const getLastPayment = (state: State) =>
   getActiveChild(state)?.payments[0];
 export const getSettings = (state: AppState) => getActiveChild(state)?.settings;
