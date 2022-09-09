@@ -12,7 +12,10 @@ import {Deletable} from '../shared/Deletable';
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
   return StyleSheet.create({
-    container: {},
+    container: {
+      backgroundColor: colors.background,
+      flex: 1,
+    },
     buttonRow: {
       paddingHorizontal: 20,
       flexDirection: 'row',
@@ -34,15 +37,18 @@ const getStyles = (isDarkMode: boolean) => {
       borderBottomWidth: 1,
       borderBottomColor: colors.text,
       backgroundColor: colors.background,
+      color: colors.text,
     },
     date: {
       fontFamily: BASE_FONT,
       fontSize: 20,
+      color: colors.text,
     },
     amount: {
       fontFamily: BASE_FONT,
       fontWeight: 'bold',
       fontSize: 20,
+      color: colors.text,
     },
   });
 };

@@ -19,7 +19,11 @@ import {Home} from './components/Home';
 import {getColors} from './styles/colors';
 import {useAppSelector} from './/data/store';
 import {PaymentHistory} from './components/PaymentHistory';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DarkTheme,
+  DefaultTheme,
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackList} from './types';
 import {EditChild} from './components/EditChild';
@@ -48,7 +52,7 @@ const App = () => {
   return (
     <SafeAreaView style={styles.background}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NavigationContainer>
+      <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
         <Stack.Navigator
           screenOptions={{headerShown: false}}
           initialRouteName={initialRouteName}>

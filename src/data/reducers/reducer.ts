@@ -62,8 +62,13 @@ const addChildHandler = (
     return state;
   }
 
-  state.children.push(action.payload);
-  console.log('EDIT CHILD: AFTER', state);
+  // if the placeholder empty child is there, replace it
+  if (state.children.length === 1 && state.children[0].name === '') {
+    state.children[0] = action.payload;
+  } else {
+    state.children.push(action.payload);
+  }
+
   return state;
 };
 

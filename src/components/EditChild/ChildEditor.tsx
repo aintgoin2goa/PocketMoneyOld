@@ -24,6 +24,7 @@ const getStyles = (isDarkMode: boolean) => {
     container: {
       padding: 10,
       flex: 1,
+      backgroundColor: colors.background,
     },
     moneyContainer: {
       flexDirection: 'row',
@@ -42,11 +43,13 @@ const getStyles = (isDarkMode: boolean) => {
       fontFamily: BASE_FONT,
       fontSize: 20,
       marginBottom: 10,
+      color: colors.text,
     },
     inlineLabelText: {
       fontFamily: BASE_FONT,
       fontSize: 20,
       marginHorizontal: 5,
+      color: colors.text,
     },
     input: {
       height: 40,
@@ -56,6 +59,7 @@ const getStyles = (isDarkMode: boolean) => {
       fontFamily: BASE_FONT,
       fontSize: 20,
       backgroundColor: colors.background,
+      color: colors.text,
       flexGrow: 1,
     },
     valueContainer: {
@@ -68,6 +72,7 @@ const getStyles = (isDarkMode: boolean) => {
       fontSize: 20,
       fontWeight: 'bold',
       marginHorizontal: 10,
+      color: colors.text,
     },
   });
 };

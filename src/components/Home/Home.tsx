@@ -6,13 +6,16 @@ import {PayDialog} from './PayDialog';
 import {Dates} from './Dates';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackList} from '../../types';
+import {getColors} from '../../styles/colors';
 
 const getStyles = (isDarkMode: boolean) => {
+  const colors = getColors(isDarkMode);
   return StyleSheet.create({
     container: {
       flex: 1,
       flexGrow: 1,
       justifyContent: 'space-between',
+      backgroundColor: colors.background,
     },
     contentContainer: {
       flex: 1,

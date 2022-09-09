@@ -86,7 +86,7 @@ export const settingsSelector = createSelector(
 
 export const childCountSelector = createSelector(
   getChildren,
-  children => children.length,
+  children => children.filter(c => c.name !== '').length,
 );
 
 export const inactiveChildrenSelector = createSelector(

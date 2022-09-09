@@ -23,6 +23,7 @@ const createStyles = (isDarkMode: boolean) => {
     },
     settingsIcon: {
       alignSelf: 'flex-end',
+      color: colors.text,
     },
     childNameContainer: {
       justifyContent: 'center',
@@ -37,6 +38,7 @@ const createStyles = (isDarkMode: boolean) => {
     childMenuIcon: {
       marginLeft: 5,
       marginTop: 2,
+      color: colors.text,
     },
   });
 };
