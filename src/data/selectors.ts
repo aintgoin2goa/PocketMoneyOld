@@ -19,21 +19,22 @@ export const amountOwedSelector = createSelector(
   getLastPayment,
   getSettings,
   (payment, settings) => {
-    if (!payment || !settings) {
+    if (!settings) {
       return 0;
     }
-    let date = new Date();
-    if (payment && payment.date) {
-      date = parseDate(payment.date);
-    }
+    let date = parseDate(
+      payment && payment.date ? payment.date : settings.beginningOfTime,
+    );
+    const remaining = payment?.remaining ?? 0;
     const now = new Date();
     let payDays = 0;
+    console.log('amountOwedSelector', {payment, settings, date, remaining});
     date = nextDay(date, settings.payDay);
     while (now > date) {
       payDays++;
       date = nextDay(date, settings.payDay);
     }
-    const owed = payment.remaining + payDays * settings.pocketMoneyPerWeek;
+    const owed = remaining + payDays * settings.pocketMoneyPerWeek;
     return owed;
   },
 );

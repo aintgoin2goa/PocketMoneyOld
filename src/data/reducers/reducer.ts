@@ -9,6 +9,7 @@ import {
 } from '../actions';
 import {initialState} from '../initialState';
 import {Child, Payment, State} from '../types';
+import {formatDate} from '../utils';
 
 const paymentHandler = (
   state: State,

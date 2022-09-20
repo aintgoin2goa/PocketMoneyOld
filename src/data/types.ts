@@ -18,6 +18,7 @@ export type Settings = {
   currency: CurrencySymbol;
   pocketMoneyPerWeek: number;
   payDay: DayOfWeek;
+  beginningOfTime: DateString;
 };
 
 export type Child = {

@@ -13,10 +13,12 @@ import {useAppSelector} from '../../data/store';
 import {Child, CurrencySymbol} from '../../data/types';
 import {BASE_FONT} from '../../styles/typography';
 import {getColors} from '../../styles/colors';
-import {splitCurrencyAmount} from '../../data/utils';
+import {formatDate, parseDate, splitCurrencyAmount} from '../../data/utils';
 import {PrimaryActionButton} from '../shared/PrimaryActionButton';
 import {Picker} from '@react-native-picker/picker';
 import {ActionSheet} from '../shared/ActionSheet';
+import {format} from 'date-fns';
+import DatePicker from 'react-native-date-picker';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
@@ -133,6 +135,11 @@ export const ChildEditor: React.FC<ChildEditorProps> = ({child, onSave}) => {
   const [showCurrencyPicker, setShowCurrencyPicker] = useState(false);
   const [showDayPicker, setShowDayPicker] = useState(false);
 
+  const [beginningOfTime, setBeginningOfTime] = useState(
+    parseDate(child?.settings?.beginningOfTime ?? formatDate(new Date())),
+  );
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
   const [currency, setCurrency] = useState(
     child?.settings?.currency.major ?? CURRENCY_POUNDS.major,
   );
@@ -151,6 +158,7 @@ export const ChildEditor: React.FC<ChildEditorProps> = ({child, onSave}) => {
         currency: currencyToSave,
         payDay: day,
         pocketMoneyPerWeek,
+        beginningOfTime: formatDate(beginningOfTime),
       },
     };
 
@@ -219,6 +227,27 @@ export const ChildEditor: React.FC<ChildEditorProps> = ({child, onSave}) => {
             {currenciesPickerItems()}
           </Picker>
         </ActionSheet>
+      </View>
+
+      <View style={styles.valueContainer}>
+        <Text style={styles.labelText}>Begin on:</Text>
+        <Text style={styles.value}>
+          {format(beginningOfTime, 'do MMM yyyy')}
+        </Text>
+        <Button title="Change" onPress={() => setShowDatePicker(true)} />
+        <DatePicker
+          modal
+          mode="date"
+          open={showDatePicker}
+          date={beginningOfTime}
+          onConfirm={date => {
+            setBeginningOfTime(date);
+            setShowDatePicker(false);
+          }}
+          onCancel={() => {
+            setShowDatePicker(false);
+          }}
+        />
       </View>
 
       <PrimaryActionButton onPress={onSaveClick} text="Save" />
