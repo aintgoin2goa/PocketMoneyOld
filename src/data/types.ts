@@ -2,11 +2,13 @@ export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type DateString = string;
 
 export type Payment = {
+  id: string;
   date: DateString;
   owed: number;
   paid: number;
   remaining: number;
   child: string;
+  childId: string;
 };
 
 export type CurrencySymbol = {
@@ -22,13 +24,20 @@ export type Settings = {
 };
 
 export type Child = {
-  id: number;
+  id: string;
   name: string;
   settings: Settings;
   payments: Payment[];
 };
 
+export type Global = {
+  currentChild: string;
+  currentDate: DateString;
+};
+
 export type State = {
   currentChild: number;
   children: Child[];
+  payments: Payment[];
+  global: Global;
 };

@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {editChild} from '../../data/actions';
-import {activeChildDetailsSelector} from '../../data/selectors';
+import actions from '../../data/actions';
+import {activeChildDetailsSelector} from '../../data/children/childSelectors';
 import {useAppDispatch, useAppSelector} from '../../data/store';
 import {Child} from '../../data/types';
 import {StackList} from '../../types';
@@ -15,7 +15,7 @@ export const EditChild: React.FC<EditChildProps> = ({navigation}) => {
 
   const onSave = (childToSave: Child) => {
     console.log('SAVE', child);
-    dispatch({type: editChild.type, payload: childToSave});
+    dispatch(actions.editChild(childToSave));
     navigation.navigate('Home');
   };
 

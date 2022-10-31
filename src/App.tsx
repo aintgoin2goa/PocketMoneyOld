@@ -28,7 +28,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {StackList} from './types';
 import {EditChild} from './components/EditChild';
 import {AddChild} from './components/EditChild/AddChild';
-import {childCountSelector} from './data/selectors';
+import {childCountSelector} from './data/children/childSelectors';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);

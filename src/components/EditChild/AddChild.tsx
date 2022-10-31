@@ -1,6 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
-import {addChild} from '../../data/actions';
+import actions from '../../data/actions';
 import {useAppDispatch} from '../../data/store';
 import {Child} from '../../data/types';
 import {StackList} from '../../types';
@@ -13,7 +13,7 @@ export const AddChild: React.FC<AddChildProps> = ({navigation}) => {
 
   const onSave = async (childToSave: Child) => {
     console.log('SAVE', childToSave);
-    dispatch({type: addChild.type, payload: childToSave});
+    dispatch(actions.addChild(childToSave));
     navigation.navigate('Home');
   };
 

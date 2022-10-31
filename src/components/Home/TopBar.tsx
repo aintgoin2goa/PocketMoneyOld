@@ -2,7 +2,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {Pressable, StyleSheet, Text, useColorScheme, View} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {activeChildSelector} from '../../data/selectors';
+import {activeChildSelector} from '../../data/children/childSelectors';
 import {useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
 import {StackList} from '../../types';

@@ -1,6 +1,9 @@
 import React from 'react';
 import {View, Text, StyleSheet, useColorScheme} from 'react-native';
-import {lastPaymentSelector, nextPaymentSelector} from '../../data/selectors';
+import {
+  lastPaymentSelector,
+  nextPaymentSelector,
+} from '../../data/payments/paymentSelectors';
 import {useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
 import {BASE_FONT, TITLE_FONT} from '../../styles/typography';

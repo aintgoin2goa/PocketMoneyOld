@@ -1,19 +1,27 @@
 import {createSelector} from '@reduxjs/toolkit';
-import {AppState} from './store';
 import {nextDay, format} from 'date-fns';
-import {formatDistance, parseDate, printCurrency} from './utils';
-import {State} from './types';
+import {formatDistance, parseDate, printCurrency} from '../utils';
+import {Payment, State} from '../types';
+import {getActiveChild, getSettings} from '../children/childSelectors';
 
-export const getChildren = (state: State) => state.children;
-export const getActiveChild = (state: State) => {
-  const index = state.currentChild ?? 0;
-  const child = state.children[index];
-  return child ?? state.children[0];
+export const getPayments = (state: State): Payment[] => {
+  const child = getActiveChild(state);
+  const payments = state.payments.filter(p => p.childId === child.id);
+  if (payments.length) {
+    return payments;
+  }
+
+  if (child.payments && child.payments.length) {
+    return child.payments;
+  }
+
+  return [];
 };
-export const getLastPayment = (state: State) =>
-  getActiveChild(state)?.payments[0];
-export const getSettings = (state: AppState) => getActiveChild(state)?.settings;
-export const getPayments = (state: AppState) => getActiveChild(state)?.payments;
+
+export const getLastPayment = (state: State) => {
+  const payments = getPayments(state);
+  return payments[0];
+};
 
 export const amountOwedSelector = createSelector(
   getLastPayment,
@@ -62,38 +70,11 @@ export const paymentHistorySelector = createSelector(
     return payments.map((payment, index) => {
       return {
         index,
-        key: `payment_${index}`,
+        id: payment.id,
+        key: payment.id,
         date: format(parseDate(payment.date), 'EEEE do LLLL'),
         amount: printCurrency(payment.paid, settings.currency),
       };
     });
-  },
-);
-
-export const activeChildSelector = createSelector(
-  getActiveChild,
-  child => child?.name ?? '',
-);
-
-export const activeChildDetailsSelector = createSelector(
-  getActiveChild,
-  child => child,
-);
-
-export const settingsSelector = createSelector(
-  getSettings,
-  settings => settings,
-);
-
-export const childCountSelector = createSelector(
-  getChildren,
-  children => children.filter(c => c.name !== '').length,
-);
-
-export const inactiveChildrenSelector = createSelector(
-  getChildren,
-  getActiveChild,
-  (children, activeChild) => {
-    return children.filter(c => c.id !== activeChild.id);
   },
 );

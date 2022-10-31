@@ -1,8 +1,8 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React from 'react';
 import {FlatList, StyleSheet, Text, useColorScheme, View} from 'react-native';
-import {deletePayment} from '../../data/actions';
-import {paymentHistorySelector} from '../../data/selectors';
+import actions from '../../data/actions';
+import {paymentHistorySelector} from '../../data/payments/paymentSelectors';
 import {useAppDispatch, useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
 import {BASE_FONT} from '../../styles/typography';
@@ -60,6 +60,7 @@ export type PaymentHistoryProps = NativeStackScreenProps<
 
 type ItemProps = {
   index: number;
+  id: string;
   key: string;
   date: string;
   amount: string;
@@ -69,10 +70,10 @@ type RenderItemArgs = {
   item: ItemProps;
 };
 
-export const Item: React.FC<ItemProps> = ({date, amount, index}) => {
+export const Item: React.FC<ItemProps> = ({date, amount, id}) => {
   const styles = getStyles(useColorScheme() === 'dark');
   const dispatch = useAppDispatch();
-  const onDelete = () => dispatch({type: deletePayment.type, payload: {index}});
+  const onDelete = () => dispatch(actions.deletePayment({id}));
   return (
     <Deletable onDelete={onDelete}>
       <View style={styles.item}>

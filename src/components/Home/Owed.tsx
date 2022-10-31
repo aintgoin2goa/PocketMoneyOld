@@ -3,7 +3,8 @@ import {StyleSheet, Text, useColorScheme, View} from 'react-native';
 import {getColors} from '../../styles/colors';
 import {BASE_FONT, TITLE_FONT} from '../../styles/typography';
 import {useAppSelector} from '../../data/store';
-import {amountOwedSelector, settingsSelector} from '../../data/selectors';
+import {settingsSelector} from '../../data/children/childSelectors';
+import {amountOwedSelector} from '../../data/payments/paymentSelectors';
 import {printCurrency} from '../../data/utils';
 
 const getStyles = (isDarkMode: boolean) => {

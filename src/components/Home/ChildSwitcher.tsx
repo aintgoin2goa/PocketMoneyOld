@@ -3,8 +3,8 @@ import {Text} from '@rneui/base';
 import React from 'react';
 import {Pressable, StyleSheet, useColorScheme, View} from 'react-native';
 import {useSelector} from 'react-redux';
-import {deleteChild, switchChild} from '../../data/actions';
-import {inactiveChildrenSelector} from '../../data/selectors';
+import actions from '../../data/actions';
+import {inactiveChildrenSelector} from '../../data/children/childSelectors';
 import {useAppDispatch} from '../../data/store';
 import {Child} from '../../data/types';
 import {getColors} from '../../styles/colors';
@@ -55,7 +55,7 @@ const ChildRow: React.FC<{
       <Pressable
         onPress={() => {
           setVisible(false);
-          dispatch({type: switchChild.type, payload: child});
+          dispatch(actions.switchChild(child));
         }}>
         <Text style={styles.text}>{child.name}</Text>
       </Pressable>
@@ -78,9 +78,7 @@ export const ChildSwitcher: React.FC<ChildSwitcherProps> = ({
   const rows = children.map(child => (
     <Deletable
       key={child.id}
-      onDelete={() =>
-        dispatch({type: deleteChild.type, payload: {id: child.id}})
-      }>
+      onDelete={() => dispatch(actions.deleteChild(child))}>
       <ChildRow setVisible={setVisible} child={child} />
     </Deletable>
   ));

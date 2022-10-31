@@ -1,14 +1,13 @@
 import React, {useState} from 'react';
 import {
   Button,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   useColorScheme,
   View,
 } from 'react-native';
-import {childCountSelector} from '../../data/selectors';
+import {childCountSelector} from '../../data/children/childSelectors';
 import {useAppSelector} from '../../data/store';
 import {Child, CurrencySymbol} from '../../data/types';
 import {BASE_FONT} from '../../styles/typography';

@@ -1,7 +1,5 @@
 import React from 'react';
 import {Pressable, StyleSheet, Text, useColorScheme, View} from 'react-native';
-import {amountOwedSelector} from '../../data/selectors';
-import {useAppSelector} from '../../data/store';
 import {getColors} from '../../styles/colors';
 import {TITLE_FONT} from '../../styles/typography';
 

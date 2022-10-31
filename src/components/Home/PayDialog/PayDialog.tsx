@@ -2,12 +2,13 @@ import React, {useState} from 'react';
 import {MoneyInput} from './MoneyInput';
 import {useAppDispatch, useAppSelector} from '../../../data/store';
 import {
+  activeChildDetailsSelector,
   activeChildSelector,
-  amountOwedSelector,
   settingsSelector,
-} from '../../../data/selectors';
-import {payment} from '../../../data/actions';
-import {formatDate} from '../../../data/utils';
+} from '../../../data/children/childSelectors';
+import {amountOwedSelector} from '../../../data/payments/paymentSelectors';
+import actions from '../../../data/actions';
+import {formatDate, uid} from '../../../data/utils';
 import {Payment} from '../../../data/types';
 import {ActionSheet} from '../../shared/ActionSheet';
 
@@ -22,21 +23,21 @@ export const PayDialog: React.FC<PayDialogProps> = ({
 }) => {
   const settings = useAppSelector(settingsSelector);
   const owed = useAppSelector(amountOwedSelector);
-  const activeChild = useAppSelector(activeChildSelector);
+  const activeChildName = useAppSelector(activeChildSelector);
+  const activeChild = useAppSelector(activeChildDetailsSelector);
   const [amount, setAmount] = useState(owed);
   const dispatch = useAppDispatch();
   const onDone = () => {
     const payload: Payment = {
+      id: uid('PAYMENT'),
       date: formatDate(new Date()),
       owed,
       paid: amount,
       remaining: owed - amount,
-      child: activeChild,
+      child: activeChildName,
+      childId: activeChild.id,
     };
-    dispatch({
-      type: payment.type,
-      payload,
-    });
+    dispatch(actions.makePayment(payload));
   };
   return (
     <ActionSheet
