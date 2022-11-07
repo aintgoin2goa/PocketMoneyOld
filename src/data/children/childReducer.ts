@@ -29,7 +29,7 @@ const deleteChild = (
 };
 
 const addChild = (children: Child[], action: PayloadAction<Child>) => {
-  console.log('addChildHandler', action);
+  console.log('addChildHandler', action, children);
   if (!action.payload) {
     return children;
   }

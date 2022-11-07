@@ -6,6 +6,7 @@ import {getActiveChild, getSettings} from '../children/childSelectors';
 
 export const getPayments = (state: State): Payment[] => {
   const child = getActiveChild(state);
+  console.log('getPayments', state);
   const payments = state.payments.filter(p => p.childId === child.id);
   if (payments.length) {
     return payments;
@@ -52,16 +53,27 @@ export const lastPaymentSelector = createSelector(getLastPayment, payment => {
     return 'No payments found';
   }
   const date = parseDate(payment.date);
-  return `${format(date, 'do LLLL')} (${formatDistance(date, new Date())})`;
+  const now = new Date();
+  return `${format(date, 'do LLLL')} (${formatDistance(date, now)})`;
 });
 
-export const nextPaymentSelector = createSelector(getSettings, settings => {
-  const nextPaymentDate = nextDay(new Date(), settings.payDay);
-  return `${format(nextPaymentDate, 'EEEE do LLLL')} (${formatDistance(
-    nextPaymentDate,
-    new Date(),
-  )})`;
-});
+export const nextPaymentSelector = createSelector(
+  getSettings,
+  settings => {
+    const nextPaymentDate = nextDay(new Date(), settings.payDay);
+    const now = new Date();
+    console.log('nextPaymentSelector', {nextPaymentDate, now});
+    return `${format(nextPaymentDate, 'EEEE do LLLL')} (${formatDistance(
+      nextPaymentDate,
+      now,
+    )})`;
+  },
+  {
+    memoizeOptions: {
+      equalityCheck: () => false,
+    },
+  },
+);
 
 export const paymentHistorySelector = createSelector(
   getPayments,

@@ -1,9 +1,8 @@
 import {Child, State} from './types';
-import {formatDate} from './utils';
-import {v4 as uuidv4} from 'uuid';
+import {formatDate, uid} from './utils';
 
 const initialChild: Child = {
-  id: `CHILD-${uuidv4()}`,
+  id: uid('CHILD'),
   name: '',
   payments: [],
   settings: {

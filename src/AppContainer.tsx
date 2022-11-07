@@ -14,10 +14,19 @@ import {store} from './data/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import App from './App';
 import {persistStore} from 'redux-persist';
-import {View, Text} from 'react-native';
+import {View, Text, AppState} from 'react-native';
+
+const listenForAppStateChange = (setNow: (now: number) => void) => {
+  AppState.addEventListener('change', nextAppState => {
+    console.log('AppStateChange', nextAppState);
+    setNow(Date.now());
+  });
+};
 
 const AppContainer = () => {
   const [rehydrated, setRehydrated] = useState(false);
+  const [, setNow] = useState(Date.now());
+  React.useEffect(() => listenForAppStateChange(setNow), []);
   const persistor = persistStore(store, {}, () => setRehydrated(true));
   if (!rehydrated) {
     return (

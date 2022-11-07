@@ -49,6 +49,7 @@ const App = () => {
   const initialRouteName: keyof StackList =
     childCount > 0 ? 'Home' : 'Add Child';
   console.log({childCount, initialRouteName});
+
   return (
     <SafeAreaView style={styles.background}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
