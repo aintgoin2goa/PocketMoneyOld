@@ -47,7 +47,7 @@ export const formatDistance = (date1: Date, date2: Date): string => {
   date1C.setHours(0, 0, 0, 0);
   date2C.setHours(0, 0, 0, 0);
   const days = differenceInDays(date1C, date2C);
-  console.log('days', {days, date1C, date2C});
+  // console.log('days', {days, date1C, date2C});
   if (days === 0) {
     return 'today';
   } else if (days === 1) {

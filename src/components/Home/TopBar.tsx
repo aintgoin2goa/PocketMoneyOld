@@ -40,14 +40,24 @@ const createStyles = (isDarkMode: boolean) => {
       marginTop: 2,
       color: colors.text,
     },
+    menuIcon: {
+      alignSelf: 'flex-start',
+      color: colors.text,
+    },
   });
 };
 
 export type TopBarProps = {
   navigation: NativeStackNavigationProp<StackList, 'Home'>;
+  menuIcon: 'menu-outline' | 'close';
+  onMenuPress: () => void;
 };
 
-export const TopBar: React.FC<TopBarProps> = ({navigation}) => {
+export const TopBar: React.FC<TopBarProps> = ({
+  navigation,
+  onMenuPress,
+  menuIcon,
+}) => {
   const styles = createStyles(useColorScheme() === 'dark');
   const name = useAppSelector(activeChildSelector);
   const [childSwitcherVisible, setChildSwitcherVisible] = useState(false);
@@ -55,6 +65,9 @@ export const TopBar: React.FC<TopBarProps> = ({navigation}) => {
   return (
     <React.Fragment>
       <View style={styles.container}>
+        <Pressable onPress={onMenuPress}>
+          <Icon name={menuIcon} size={30} style={styles.menuIcon} />
+        </Pressable>
         <Pressable
           style={styles.childNameContainer}
           onPress={() => setChildSwitcherVisible(!childSwitcherVisible)}>

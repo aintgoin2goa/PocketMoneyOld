@@ -7,6 +7,8 @@ import {Dates} from './Dates';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackList} from '../../types';
 import {getColors} from '../../styles/colors';
+import {SideMenu} from './SideMenu';
+import {BackupSpinner} from './BackupSpinner';
 
 const getStyles = (isDarkMode: boolean) => {
   const colors = getColors(isDarkMode);
@@ -31,10 +33,27 @@ export type HomeProps = NativeStackScreenProps<StackList, 'Home'>;
 export const Home: React.FC<HomeProps> = ({navigation}) => {
   const styles = getStyles(useColorScheme() === 'dark');
   const [showPayDialog, setShowPayDialog] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [showBackupSpinner, setShowBackupSpinner] = useState(false);
+
+  const menuPressed = () => {
+    setShowMenu(!showMenu);
+  };
+
+  const menuIcon = showMenu ? 'close' : 'menu-outline';
 
   return (
     <View style={styles.container}>
-      <TopBar navigation={navigation} />
+      <TopBar
+        navigation={navigation}
+        onMenuPress={menuPressed}
+        menuIcon={menuIcon}
+      />
+      <SideMenu
+        show={showMenu}
+        closeMenu={() => setShowMenu(false)}
+        showSpinner={setShowBackupSpinner}
+      />
       <View style={styles.contentContainer}>
         <Owed />
         <Dates />
@@ -53,6 +72,7 @@ export const Home: React.FC<HomeProps> = ({navigation}) => {
         setShowPayDialog={setShowPayDialog}
         showPayDialog={showPayDialog}
       />
+      {showBackupSpinner && <BackupSpinner text="Backing up..." />}
     </View>
   );
 };

@@ -6,7 +6,7 @@ import {getActiveChild, getSettings} from '../children/childSelectors';
 
 export const getPayments = (state: State): Payment[] => {
   const child = getActiveChild(state);
-  console.log('getPayments', state);
+  // console.log('getPayments', state);
   const payments = state.payments.filter(p => p.childId === child.id);
   if (payments.length) {
     return payments;
@@ -37,7 +37,7 @@ export const amountOwedSelector = createSelector(
     const remaining = payment?.remaining ?? 0;
     const now = new Date();
     let payDays = 0;
-    console.log('amountOwedSelector', {payment, settings, date, remaining});
+    // console.log('amountOwedSelector', {payment, settings, date, remaining});
     date = nextDay(date, settings.payDay);
     while (now > date) {
       payDays++;
@@ -62,7 +62,7 @@ export const nextPaymentSelector = createSelector(
   settings => {
     const nextPaymentDate = nextDay(new Date(), settings.payDay);
     const now = new Date();
-    console.log('nextPaymentSelector', {nextPaymentDate, now});
+    // console.log('nextPaymentSelector', {nextPaymentDate, now});
     return `${format(nextPaymentDate, 'EEEE do LLLL')} (${formatDistance(
       nextPaymentDate,
       now,

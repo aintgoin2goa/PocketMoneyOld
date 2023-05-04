@@ -4,7 +4,7 @@ import {State} from '../types';
 import {getActiveChildId} from '../global/selectors';
 
 export const getChildren = (state: State) => {
-  console.log('getChildren', state);
+  // console.log('getChildren', state);
   return state.children;
 };
 

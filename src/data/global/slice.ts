@@ -13,8 +13,13 @@ const updateCurrentDate = (state: Global) => {
   return state;
 };
 
+const setBackupKey = (state: Global, action: PayloadAction<{key: string}>) => {
+  state.backupKey = action.payload.key;
+  return state;
+};
+
 export const globalSlice = createSlice({
   name: 'global',
   initialState: initialState.global,
-  reducers: {switchChild, updateCurrentDate},
+  reducers: {switchChild, updateCurrentDate, setBackupKey},
 });

@@ -19,6 +19,7 @@ export const initialState: State = {
   global: {
     currentChild: initialChild.id,
     currentDate: formatDate(new Date()),
+    backupKey: '',
   },
   currentChild: 0,
 };

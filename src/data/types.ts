@@ -33,6 +33,7 @@ export type Child = {
 export type Global = {
   currentChild: string;
   currentDate: DateString;
+  backupKey: string;
 };
 
 export type State = {
